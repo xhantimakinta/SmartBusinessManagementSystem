@@ -1,0 +1,48 @@
+services:
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:?MSSQL_SA_PASSWORD must be set}
+    ports:
+      - "${MSSQL_PORT:-1433}:1433"
+    volumes:
+      - smartbusiness-sql:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "(echo > /dev/tcp/localhost/1433) >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: SmartBusiness.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__SmartBusiness: Server=database,1433;Database=SmartBusiness;User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True
+      Jwt__Key: ${JWT_KEY:?JWT_KEY must be set}
+      ExternalApis__ExchangeRates__ApiKey: ${EXCHANGE_RATES_API_KEY:-}
+      ExternalApis__Email__ApiKey: ${EMAIL_PROVIDER_API_KEY:-}
+      ExternalApis__Email__FromEmail: ${EMAIL_FROM_ADDRESS:-}
+      Cors__AllowedOrigins__0: ${FRONTEND_ORIGIN:-http://localhost:8080}
+    ports:
+      - "5017:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      api:
+        condition: service_started
+
+    restart: unless-stopped
+
+volumes:
+  smartbusiness-sql:

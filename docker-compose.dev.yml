@@ -1,0 +1,45 @@
+services:
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:?MSSQL_SA_PASSWORD must be set}
+    ports:
+      - "${MSSQL_PORT:-1433}:1433"
+  api:
+    build:
+      context: ./backend
+      dockerfile: SmartBusiness.Api/Dockerfile.dev
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__SmartBusiness: Server=database,1433;Database=SmartBusiness;User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True
+      Jwt__Key: ${JWT_KEY:?JWT_KEY must be set}
+      ExternalApis__ExchangeRates__ApiKey: ${EXCHANGE_RATES_API_KEY:-}
+      ExternalApis__Email__ApiKey: ${EMAIL_PROVIDER_API_KEY:-}
+      ExternalApis__Email__FromEmail: ${EMAIL_FROM_ADDRESS:-}
+      Cors__AllowedOrigins__0: http://localhost:5173
+    volumes:
+      - ./backend:/src
+    ports:
+      - "${API_PORT:-5017}:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    environment:
+      VITE_API_URL: /api
+    volumes:
+      - ./frontend:/app
+      - frontend-node-modules:/app/node_modules
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+    depends_on:
+      - api
+
+volumes:
+  smartbusiness-sql:
+  frontend-node-modules:

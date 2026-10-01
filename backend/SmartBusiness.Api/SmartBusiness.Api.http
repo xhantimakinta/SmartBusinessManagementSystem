@@ -1,0 +1,6 @@
+@SmartBusiness.Api_HostAddress = http://localhost:5017
+
+GET {{SmartBusiness.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

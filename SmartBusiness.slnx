@@ -1,0 +1,7 @@
+<Solution>
+	<Project Path="backend/SmartBusiness.Api/SmartBusiness.Api.csproj" />
+	<Project Path="backend/SmartBusiness.Application/SmartBusiness.Application.csproj" />
+	<Project Path="backend/SmartBusiness.Domain/SmartBusiness.Domain.csproj" />
+	<Project Path="backend/SmartBusiness.Infrastructure/SmartBusiness.Infrastructure.csproj" />
+	<Project Path="backend/SmartBusiness.Api.Tests/SmartBusiness.Api.Tests.csproj" />
+</Solution>

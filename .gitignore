@@ -1,0 +1,28 @@
+# .NET
+**/bin/
+**/obj/
+*.user
+*.suo
+
+# Node
+**/node_modules/
+**/dist/
+*.local
+npm-debug.log*
+
+# Environment and secrets
+**/.env
+**/.env.*
+!**/.env.example
+
+# IDE and OS
+.vs/
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# Test and coverage output
+coverage/
+TestResults/

@@ -1,0 +1,7 @@
+FROM mcr.microsoft.com/dotnet/sdk:10.0
+WORKDIR /src
+COPY . .
+RUN dotnet restore SmartBusiness.Api/SmartBusiness.Api.csproj
+EXPOSE 8080
+ENV ASPNETCORE_URLS=http://+:8080
+ENTRYPOINT ["dotnet", "watch", "--project", "SmartBusiness.Api/SmartBusiness.Api.csproj", "run", "--no-launch-profile", "--urls", "http://0.0.0.0:8080"]
