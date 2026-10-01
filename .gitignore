@@ -3,6 +3,10 @@
 **/obj/
 *.user
 *.suo
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
 
 # Node
 **/node_modules/
@@ -26,3 +30,6 @@ Thumbs.db
 # Test and coverage output
 coverage/
 TestResults/
+backend-test-output.txt
+frontend/build-output.txt
+*.trx
