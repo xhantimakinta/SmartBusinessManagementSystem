@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: smartbusiness-fullstack
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    disk:
+      name: smartbusiness-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ASPNETCORE_HTTP_PORTS
+        value: "10000"
+      - key: ConnectionStrings__SmartBusiness
+        value: Data Source=/var/data/smartbusiness.db
+      - key: Jwt__Key
+        generateValue: true
+      - key: Jwt__Issuer
+        value: SmartBusiness.Api
+      - key: Jwt__Audience
+        value: SmartBusiness.Client

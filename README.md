@@ -96,6 +96,10 @@ GitHub Pages is configured to publish the `docs/` folder from `main`. To update 
 
 GitHub Pages only hosts the frontend. To make sign-in and business features work, deploy the API separately on a host that supports ASP.NET Core and configure its persistent database, a JWT key of at least 32 characters, matching JWT issuer and audience settings, and the Pages origin in `Cors:AllowedOrigins`. Then set `VITE_API_URL` to the public API base URL ending in `/api` before building the Pages frontend. The API and database are not currently hosted.
 
+### Full-Stack Render Deployment
+
+The root `Dockerfile` and `render.yaml` define a single-origin deployment: ASP.NET serves the Vite frontend and API together, and SQLite is stored on a persistent disk. Create a Blueprint in Render using this repository to provision it. The blueprint uses a paid Starter web service and a 1 GB persistent disk; review Render pricing before deploying. Render generates the JWT signing key automatically.
+
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.

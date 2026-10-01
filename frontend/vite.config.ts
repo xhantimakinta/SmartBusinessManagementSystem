@@ -3,7 +3,7 @@ import { defineConfig } from 'vitest/config'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig(({ mode }) => ({
-  base: mode === 'production' ? '/SmartBusinessManagementSystem/' : '/',
+  base: process.env.VITE_BASE_PATH ?? (mode === 'production' ? '/SmartBusinessManagementSystem/' : '/'),
   plugins: [react(), tailwindcss()],
   server: {
     port: 5173,

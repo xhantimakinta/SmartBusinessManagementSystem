@@ -121,7 +121,10 @@ if (!app.Environment.IsEnvironment("DesignTime"))
 {
     using var scope = app.Services.CreateScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<SmartBusinessDbContext>();
-    dbContext.Database.Migrate();
+    if (dbContext.Database.GetMigrations().Any())
+        dbContext.Database.Migrate();
+    else
+        dbContext.Database.EnsureCreated();
 }
 
 if (app.Environment.IsDevelopment())
@@ -133,6 +136,13 @@ else
 {
     app.UseHsts();
     app.UseHttpsRedirection();
+}
+
+var frontendIndex = Path.Combine(app.Environment.WebRootPath ?? string.Empty, "index.html");
+if (File.Exists(frontendIndex))
+{
+    app.UseDefaultFiles();
+    app.UseStaticFiles();
 }
 
 app.UseCors("Frontend");
