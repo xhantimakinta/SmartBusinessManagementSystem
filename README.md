@@ -92,9 +92,9 @@ The repository includes a GitHub Actions workflow for backend and frontend verif
 
 ## Public Deployment
 
-The frontend can be published to GitHub Pages by setting the repository Actions variable `VITE_API_URL` to the public API base URL, including `/api` (for example, `https://api.example.com/api`), and setting **Settings > Pages > Build and deployment > Source** to **GitHub Actions**. Pushes to `main` then build and deploy the frontend automatically.
+GitHub Pages is configured to publish the `docs/` folder from `main`. To update the static frontend, run `npm run build:pages` from `frontend/`, then commit and push the generated `docs/` files. This branch-based publishing does not require GitHub Actions.
 
-The API must be deployed separately on a host that supports ASP.NET Core and configured with a persistent database, a JWT key of at least 32 characters, matching JWT issuer and audience settings, and the Pages origin in `Cors:AllowedOrigins`. GitHub Pages only hosts the static frontend; it does not host the API or database.
+GitHub Pages only hosts the frontend. To make sign-in and business features work, deploy the API separately on a host that supports ASP.NET Core and configure its persistent database, a JWT key of at least 32 characters, matching JWT issuer and audience settings, and the Pages origin in `Cors:AllowedOrigins`. Then set `VITE_API_URL` to the public API base URL ending in `/api` before building the Pages frontend. The API and database are not currently hosted.
 
 ## License
 
