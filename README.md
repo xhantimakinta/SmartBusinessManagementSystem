@@ -90,6 +90,12 @@ Run frontend linting:
 
 The repository includes a GitHub Actions workflow for backend and frontend verification. The workflow checks formatting, restore, build, test, lint, and Docker image build health.
 
+## Public Deployment
+
+The frontend can be published to GitHub Pages by setting the repository Actions variable `VITE_API_URL` to the public API base URL, including `/api` (for example, `https://api.example.com/api`), and setting **Settings > Pages > Build and deployment > Source** to **GitHub Actions**. Pushes to `main` then build and deploy the frontend automatically.
+
+The API must be deployed separately on a host that supports ASP.NET Core and configured with a persistent database, a JWT key of at least 32 characters, matching JWT issuer and audience settings, and the Pages origin in `Cors:AllowedOrigins`. GitHub Pages only hosts the static frontend; it does not host the API or database.
+
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.

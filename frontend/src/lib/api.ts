@@ -15,7 +15,7 @@ api.interceptors.request.use((config) => {
 })
 
 api.interceptors.response.use((response) => response, (error) => {
-  if (error.response?.status === 401) { localStorage.removeItem('smartbusiness_token'); localStorage.removeItem('smartbusiness_user'); if (!window.location.pathname.startsWith('/login')) window.location.assign('/login') }
+  if (error.response?.status === 401) { localStorage.removeItem('smartbusiness_token'); localStorage.removeItem('smartbusiness_user'); if (import.meta.env.PROD ? !window.location.hash.startsWith('#/login') : !window.location.pathname.startsWith('/login')) window.location.assign(import.meta.env.PROD ? `${import.meta.env.BASE_URL}#/login` : '/login') }
   return Promise.reject(error)
 })
 
